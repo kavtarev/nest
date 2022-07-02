@@ -1,0 +1,13 @@
+{
+  "name": "nest_redone",
+  "version": "1.0.0",
+  "description": "nest with maximum features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivan Kavtarev",
+  "license": "ISC",
+  "dependencies": {
+  }
+}
