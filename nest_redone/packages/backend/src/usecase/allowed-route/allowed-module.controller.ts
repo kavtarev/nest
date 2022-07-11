@@ -1,15 +1,22 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { HTTP_SERVICE } from './../../modules/http-module/constants';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { RequireAuth } from 'src/core/user/user.guard';
+import { IHttpService } from 'src/modules/http-module/http-service.interface';
 import { AllowedUsecase } from './allowed-route.usecase';
 
 @Controller('/')
 export class AllowedController {
-  constructor(private readonly usecase: AllowedUsecase) {}
+  constructor(
+    @Inject(HTTP_SERVICE)
+    private readonly httpService: IHttpService,
+    private readonly usecase: AllowedUsecase,
+  ) {}
 
-  @RequireAuth()
+  // @RequireAuth()
   @Get('pes')
   async getMe(@Query('name') name: string) {
-    const result = await this.usecase.echo(JSON.stringify(name));
+    // const result = await this.usecase.echo(JSON.stringify(name));
+    const result = await this.httpService.get('todos/1');
     return result;
   }
 }
