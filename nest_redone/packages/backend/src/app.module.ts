@@ -3,7 +3,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { ConfigurationModule } from './modules/config/config.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { AllowedModule } from './usecase/allowed-route/allowed-route.module';
-import { RegistrationModule } from './usecase/registation/registration.module';
+import { RegistrationModule } from './usecase/registration/registration.module';
 
 @Module({
   imports: [

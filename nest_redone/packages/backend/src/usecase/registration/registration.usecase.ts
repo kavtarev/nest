@@ -1,4 +1,4 @@
-import { UserRepo } from './../../core/user/user.repo';
+import { UserRepo } from '../../core/user/user.repo';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from 'src/core/auth/auth.service';
 import { IRegistration } from './registration.enterface';
