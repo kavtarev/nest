@@ -4,10 +4,10 @@ import { RegistrationUsecase } from './registration.usecase';
 
 @Controller('/auth')
 export class RegistrationController {
-  constructor(private readonly usercase: RegistrationUsecase) {}
+  constructor(private readonly usecase: RegistrationUsecase) {}
   @Post('register')
   async register(@Body() body: RegistrationDto) {
-    const token = await this.usercase.execute(body);
+    const token = await this.usecase.execute(body);
     return token;
   }
 }

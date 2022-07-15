@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "src",
+  "testEnvironment": "node",
+  "testRegex": "\\.e2e\\.ts$",
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.json",
+      "isolatedModules": true
+    }
+  },
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}

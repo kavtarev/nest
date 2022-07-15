@@ -1,7 +1,7 @@
 import { HTTP_SERVICE } from './../../modules/http-module/constants';
 import { Controller, Get, Inject, Query } from '@nestjs/common';
-import { RequireAuth } from 'src/core/user/user.guard';
-import { IHttpService } from 'src/modules/http-module/http-service.interface';
+import { RequireAuth } from '../../../src/core/user/user.guard';
+import { IHttpService } from '../../../src/modules/http-module/http-service.interface';
 import { AllowedUsecase } from './allowed-route.usecase';
 
 @Controller('/')

@@ -5,13 +5,10 @@ import { DatabaseModule } from './modules/database/database.module';
 import { AllowedModule } from './usecase/allowed-route/allowed-route.module';
 import { RegistrationModule } from './usecase/registration/registration.module';
 
+export const baseModules = [ConfigurationModule, DatabaseModule];
+export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
 @Module({
-  imports: [
-    ConfigurationModule,
-    DatabaseModule,
-    AllowedModule,
-    RegistrationModule,
-  ],
-  providers: [{ provide: APP_PIPE, useClass: ValidationPipe }],
+  imports: [...baseModules, AllowedModule, RegistrationModule],
+  providers: [...baseProviders],
 })
 export class AppModule {}

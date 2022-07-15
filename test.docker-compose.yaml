@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  test_backend:
+    image: node:16-alpine
+    ports:
+      - 3100:3100
+    expose:
+      - 3100
+    working_dir:
+      /app
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_DATABASE=postgres
+      - DATABASE_HOST=test_database
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PORT=5432
+    command:
+      - sh
+      - -c
+      - |
+        cd nest_redone/packages/backend; npm run test:e2e
+    depends_on:
+      - test_database
+
+  test_database:
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
