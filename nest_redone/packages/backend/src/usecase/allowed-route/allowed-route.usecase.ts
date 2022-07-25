@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepo } from '../../../src/core/user/user.repo';
+import { UserRepo } from '../../core/user/user.repo';
 
 @Injectable()
 export class AllowedUsecase {
