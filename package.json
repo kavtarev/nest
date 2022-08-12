@@ -11,5 +11,6 @@
   "author": "Ivan Kavtarev",
   "license": "ISC",
   "dependencies": {
-  }
+  },
+  "workspaces": ["./nest_redone/packages/*"]
 }
