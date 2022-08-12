@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
+import { ITestClient } from 'src/test/test-clients/test-client.interface';
 import { setup } from '../../../src/test/setup';
-import { ITestClient } from '../../../src/test/test-clients/test-client.interface';
 import { AllowedModule } from './allowed-route.module';
 
 describe('first test', () => {

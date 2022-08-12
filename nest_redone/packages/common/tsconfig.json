@@ -16,13 +16,14 @@
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "./dist",
+    "rootDir": "./helpers",
     "baseUrl": "./",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false
-  },
-  "sourceMap": true,
+    },
+    "sourceMap": true,
   "include": ["**/*.ts", "./src/**/*.json"],
   "exclude": ["node_modules", ".coverage", "dist"]
 }
