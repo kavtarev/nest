@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
     "Kavtarev"
-  ]
+  ],
+  "js/ts.implicitProjectConfig.experimentalDecorators":true
 }
