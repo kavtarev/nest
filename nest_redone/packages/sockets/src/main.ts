@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 const options: MicroserviceOptions = {
   transport: Transport.TCP,
   options: {
-    host: 'localhost',
+    host: 'backend_sockets',
     port: 3101
   }
 }

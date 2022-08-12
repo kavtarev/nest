@@ -6,6 +6,8 @@ export class MathController {
   constructor(private usecase: MathUsecase) {}
   @Post('math')
   async sum(@Body() dto: { body: number[] }) {
+    console.log('here');
+    
     const data = await this.usecase.execute(dto.body);
 
     return data;
