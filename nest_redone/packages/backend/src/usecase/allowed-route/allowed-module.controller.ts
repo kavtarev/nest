@@ -17,8 +17,6 @@ export class AllowedController {
   @Get('pes')
   async getMe(@Query('name') name: string) {
     // const result = await this.usecase.echo(JSON.stringify(name));
-    console.log(mySum(2, 5));
-    
     const result = await this.httpService.get('todos/1');
     return result;
   }

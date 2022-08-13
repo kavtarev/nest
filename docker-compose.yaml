@@ -67,6 +67,10 @@ services:
     volumes:
       - nest_redone_sockets:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
 
 volumes:
   nest_redone:

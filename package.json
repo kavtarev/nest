@@ -11,6 +11,8 @@
   "author": "Ivan Kavtarev",
   "license": "ISC",
   "dependencies": {
+    "amqp-connection-manager": "^4.1.6",
+    "amqplib": "^0.10.2"
   },
   "workspaces": [
     "./nest_redone/packages/*"
