@@ -10,6 +10,7 @@ const options: MicroserviceOptions = {
     queueOptions: {
       durable: false
     },
+    noAck: false
   },
 }
 async function bootstrap() {

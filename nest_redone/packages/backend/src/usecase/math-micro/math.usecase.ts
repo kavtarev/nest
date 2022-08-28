@@ -22,6 +22,7 @@ export class MathUsecase {
         queueOptions: {
           durable: false,
         },
+        noAck: false,
       },
     });
   }

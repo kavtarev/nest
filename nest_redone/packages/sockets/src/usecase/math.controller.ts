@@ -7,9 +7,8 @@ export class MathController {
   async sum(@Payload() data: number[], @Ctx() context: RmqContext) {
     console.log(data);
     console.log(   '    context.getPattern()', context.getPattern())
-    console.log(   '    context.args()', context.getArgs())
-    console.log(   '    context.channel()', context.getChannelRef())
-    console.log(   '    context.message()', context.getMessage())
+    const channel = context.getChannelRef()
+    channel.ack(context.getMessage())
     
     return 56;
   }
