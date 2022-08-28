@@ -20,7 +20,6 @@ describe('first test', () => {
 
   it('test initial', async () => {
     const data = await client.getRequest();
-    console.log(data);
     expect(data).toBeDefined();
   });
 

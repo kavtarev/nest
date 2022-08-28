@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
-  Client,
   ClientProxy,
   ClientProxyFactory,
-  MicroserviceOptions,
   Transport,
 } from '@nestjs/microservices';
 
@@ -12,8 +10,6 @@ export class MathUsecase {
   private client: ClientProxy;
 
   constructor() {
-    console.log('usercaes');
-
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
@@ -28,8 +24,6 @@ export class MathUsecase {
   }
 
   async execute(dto: number[]) {
-    console.log('in execute');
-
     return this.client.send('sum', dto);
   }
 }
