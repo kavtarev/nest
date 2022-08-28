@@ -12,9 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "amqp-connection-manager": "^4.1.6",
-    "amqplib": "^0.10.2"
+    "amqplib": "^0.10.2",
+    "aws-sdk": "^2.1204.0"
   },
   "workspaces": [
     "./nest_redone/packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@types/multer": "^1.4.7"
+  }
 }
