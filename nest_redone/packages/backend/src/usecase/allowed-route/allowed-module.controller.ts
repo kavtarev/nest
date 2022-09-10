@@ -5,10 +5,11 @@ import {
   Post,
   Query,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3 } from 'aws-sdk';
+import { PassportRepository } from 'src/core/passports/passport.repository';
 import { IHttpService } from '../../modules/http-module/http-service.interface';
 import { HTTP_SERVICE } from './../../modules/http-module/constants';
 import { AllowedUsecase } from './allowed-route.usecase';
@@ -19,6 +20,7 @@ export class AllowedController {
     @Inject(HTTP_SERVICE)
     private readonly httpService: IHttpService,
     private readonly usecase: AllowedUsecase,
+    private readonly passportRepo: PassportRepository,
   ) {}
 
   // @RequireAuth()
@@ -87,13 +89,41 @@ export class AllowedController {
       signatureVersion: 'v4',
     });
 
-    const obj = await s3Stream
+    const buffers = [];
+
+    const readStream = await s3Stream
       .getObject({
         Bucket: 'test',
         Key: 'some key2',
       })
-      .promise();
+      .createReadStream();
 
-    return obj.Body.toString();
+    readStream.on('data', async (chunk) => {
+      console.log(chunk.toString());
+
+      const passports = chunk
+        .toString()
+        .replaceAll(', ', '')
+        .split('\n')
+        .map((item) => {
+          return {
+            data: item,
+          };
+        });
+
+      const pass = new Array(1000).fill(0);
+
+      const lotOfPassports = pass.map((item) => {
+        return {
+          data: String(Math.random()),
+        };
+      });
+
+      await this.passportRepo.saveMany(lotOfPassports);
+
+      buffers.push(chunk);
+    });
+
+    return buffers;
   }
 }

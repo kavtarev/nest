@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportEntity } from 'src/core/passports/passport.entity';
+import { PassportRepository } from 'src/core/passports/passport.repository';
 import { AuthModule } from '../../core/auth/auth.module';
 import { UserEntity } from '../../core/user/user.entity';
 import { UserRepo } from '../../core/user/user.repo';
@@ -8,8 +10,12 @@ import { AllowedController } from './allowed-module.controller';
 import { AllowedUsecase } from './allowed-route.usecase';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), AuthModule, HttpModule],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, PassportEntity]),
+    AuthModule,
+    HttpModule,
+  ],
   controllers: [AllowedController],
-  providers: [AllowedUsecase, UserRepo],
+  providers: [AllowedUsecase, UserRepo, PassportRepository],
 })
 export class AllowedModule {}

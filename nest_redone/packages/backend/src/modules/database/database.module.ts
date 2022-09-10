@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportEntity } from 'src/core/passports/passport.entity';
 import { UserEntity } from '../../core/user/user.entity';
 
 @Module({
@@ -13,7 +14,7 @@ import { UserEntity } from '../../core/user/user.entity';
       password: process.env.DATABASE_PASSWORD,
       migrationsRun: true,
       migrations: [],
-      entities: [UserEntity],
+      entities: [UserEntity, PassportEntity],
       dropSchema: false,
       synchronize: true,
     }),
