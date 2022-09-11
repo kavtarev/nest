@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3 } from 'aws-sdk';
+import { CreateS3readable } from 'src/common/create-s3readable';
+import { S3Readable } from 'src/common/s3.readable';
 import { PassportRepository } from 'src/core/passports/passport.repository';
 import { IHttpService } from '../../modules/http-module/http-service.interface';
 import { HTTP_SERVICE } from './../../modules/http-module/constants';
@@ -89,41 +91,37 @@ export class AllowedController {
       signatureVersion: 'v4',
     });
 
-    const buffers = [];
+    const stream = await CreateS3readable(s3Stream, {
+      Bucket: 'test',
+      Key: 'some key2',
+    });
 
-    const readStream = await s3Stream
-      .getObject({
-        Bucket: 'test',
-        Key: 'some key2',
-      })
-      .createReadStream();
+    let data = '';
 
-    readStream.on('data', async (chunk) => {
-      console.log(chunk.toString());
+    stream.on('data', async (chunk) => {
+      console.log('chunk.toString()', chunk.toString());
 
-      const passports = chunk
-        .toString()
-        .replaceAll(', ', '')
-        .split('\n')
-        .map((item) => {
-          return {
-            data: item,
-          };
-        });
+      data = (data + chunk.toString()) as string;
 
-      const pass = new Array(1000).fill(0);
+      const endOfString = data.endsWith('\n');
+      console.log('data', data);
 
-      const lotOfPassports = pass.map((item) => {
+      const passports = data.split('\n').map((item) => {
         return {
-          data: String(Math.random()),
+          data: item.replace(', ', ''),
         };
       });
 
-      await this.passportRepo.saveMany(lotOfPassports);
+      console.log('passports', passports);
 
-      buffers.push(chunk);
+      if (!endOfString) {
+        const end = passports.pop();
+        data = end.data || '';
+      } else {
+        data = '';
+      }
+
+      await this.passportRepo.saveMany(passports);
     });
-
-    return buffers;
   }
 }
