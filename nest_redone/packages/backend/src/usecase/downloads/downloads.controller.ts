@@ -2,25 +2,38 @@ import {
   Controller,
   Get,
   Res,
+  StreamableFile,
   UseGuards,
   UseInterceptors,
-  Response,
 } from '@nestjs/common';
-import { LoggingDecorator } from 'src/common/handlers/decorators/logging.decorator';
 import { LoggingGuard } from 'src/common/handlers/guards/logging.guard';
 import { LoggingInterceptor } from 'src/common/handlers/interceptors/logging.interceptor';
+import { XslxsIntercerptor } from 'src/common/handlers/interceptors/xslxs.intercerptor';
 import { DownloadsUsecase } from './downloads.usecase';
 
+import * as XLXS from 'xlsx';
+
 @UseGuards(LoggingGuard)
-@UseInterceptors(LoggingInterceptor)
+// @UseInterceptors(XslxsIntercerptor)
 @Controller('/')
 export class DownloadsController {
   constructor(private readonly usecase: DownloadsUsecase) {}
 
   @Get('handlers')
-  async execute(@Res() res: Response) {
+  async execute() {
     const result = await this.usecase.execute();
 
-    return result;
+    const book = XLXS.utils.book_new();
+    const sheet = XLXS.utils.json_to_sheet([result]);
+    const name = 'NAME';
+    XLXS.utils.book_append_sheet(book, sheet);
+
+    const buffer = XLXS.write(book, { type: 'buffer' });
+
+    return new StreamableFile(buffer, {
+      disposition: `attachment; filename="${name}.xlsx"`,
+      length: buffer.length,
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
   }
 }
