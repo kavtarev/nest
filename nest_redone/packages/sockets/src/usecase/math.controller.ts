@@ -9,6 +9,8 @@ export class MathController {
     const channel = context.getChannelRef()
     channel.ack(context.getMessage())
     
+    console.log(data);
+    
     return 56;
   }
 }

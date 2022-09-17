@@ -21,15 +21,18 @@
     "test:e2e": "jest --config jest-e2e.json"
   },
   "dependencies": {
-    "@nest_redone/common": "0.0.1",
     "@nest_redone/backend": "0.0.1",
+    "@nest_redone/common": "0.0.1",
     "@nestjs/common": "8.4.0",
     "@nestjs/config": "2.0.0",
     "@nestjs/core": "8.4.0",
     "@nestjs/jwt": "^8.0.1",
-    "@nestjs/platform-express": "^8.0.0",
     "@nestjs/microservices": "8.4.0",
+    "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "8.0.3",
+    "@types/ws": "^8.5.3",
+    "amqp-connection-manager": "^4.1.6",
+    "amqplib": "^0.10.2",
     "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
@@ -38,8 +41,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.0",
     "typeorm": "0.2.37",
-    "amqp-connection-manager": "^4.1.6",
-    "amqplib": "^0.10.2"
+    "ws": "^8.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
