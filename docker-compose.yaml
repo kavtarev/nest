@@ -37,6 +37,7 @@ services:
       - 3100
     ports:
       - 3101:3100
+      - 8080:8080
     working_dir:
       /app
     volumes:

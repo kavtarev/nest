@@ -1,4 +1,4 @@
-import { UserRepo } from 'src/core/user/user.repo';
+import { UserRepository } from 'src/core/user/user.repo';
 import { AuthService } from 'src/core/auth/auth.service';
 import {
   applyDecorators,
@@ -14,7 +14,7 @@ import {
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly auth: AuthService,
-    private readonly userRepo: UserRepo,
+    private readonly userRepo: UserRepository,
   ) {}
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();

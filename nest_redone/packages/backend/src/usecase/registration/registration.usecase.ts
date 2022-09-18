@@ -1,4 +1,4 @@
-import { UserRepo } from '../../core/user/user.repo';
+import { UserRepository } from '../../core/user/user.repo';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from '../../core/auth/auth.service';
 import { IRegistration } from './registration.interface';
@@ -6,7 +6,7 @@ import { IRegistration } from './registration.interface';
 @Injectable()
 export class RegistrationUsecase {
   constructor(
-    private readonly userRepo: UserRepo,
+    private readonly userRepo: UserRepository,
     private readonly auth: AuthService,
   ) {}
   async execute({ email, password }: IRegistration) {

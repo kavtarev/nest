@@ -1,12 +1,15 @@
 import { OnApplicationBootstrap } from '@nestjs/common';
 import { IncomingMessage } from 'http';
-import { WebSocketServer, WebSocket, Server} from 'ws';
+import { WebSocketServer, WebSocket, Server,} from 'ws';
+import { MessageHandler } from './message-handler';
 import { MessageDto } from './ws.interface';
 
 export class WsServer implements OnApplicationBootstrap {
   private server: Server<WebSocket>
 
-  private clientsMap: Map<string, WebSocket>;
+  private clientsMap: Map<string, WebSocket> = new Map();
+
+  private clients: Map<WebSocket, string> = new Map();
 
   constructor() {
     console.log('server is upppp');
@@ -38,7 +41,28 @@ export class WsServer implements OnApplicationBootstrap {
     })
 
     this.server.on('connection', (client: WebSocket, req: IncomingMessage ) => {
+      if (this.clientsMap.has(req.socket.remoteAddress)) {
+        console.log('has one');
+      }      
+
+      this.clients.set(client, 'name')      
+      
       this.clientsMap.set(req.socket.remoteAddress, client)
+
+      client.on('message', (msg) => {
+          const handler = new MessageHandler(msg);
+
+          const result = handler.getMessage()
+
+          if (!result.isValid) {
+            client.close()
+            console.log(8989);
+            
+          }
+
+          console.log(result.message);
+          
+      })
 
       client.on('close', () => {
         this.clientsMap.delete(req.socket.remoteAddress);

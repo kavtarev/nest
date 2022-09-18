@@ -7,6 +7,8 @@ export class SocketController {
   @Get()
   async execute() {
     //const result = await this.usecase.execute()
+    throw new Error('h');
+    
     return 89;
   }
 }

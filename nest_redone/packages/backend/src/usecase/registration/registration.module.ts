@@ -1,4 +1,4 @@
-import { UserRepo } from '../../core/user/user.repo';
+import { UserRepository } from '../../core/user/user.repo';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../../core/auth/auth.module';
 import { RegistrationController } from './registration.controller';
@@ -8,7 +8,7 @@ import { UserEntity } from '../../core/user/user.entity';
 
 @Module({
   controllers: [RegistrationController],
-  providers: [RegistrationUsecase, UserRepo],
+  providers: [RegistrationUsecase, UserRepository],
   imports: [AuthModule, TypeOrmModule.forFeature([UserEntity])],
 })
 export class RegistrationModule {}

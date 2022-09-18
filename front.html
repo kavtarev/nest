@@ -11,20 +11,14 @@
   <script>
     const socket = new WebSocket('ws://localhost:8080')
 
+    socket.onopen = () => {
+      socket.send(JSON.stringify({msg: 'subscribe', routes: ['count']}))
+    }
 
-    socket.addEventListener('open', () => {
-      console.log(9934242);
-
-      socket.send('889898')
-    })
-
-    socket.addEventListener('message', (data) => {
-      console.log(111111);
-      console.log(data.data);
-    })
+    socket.onmessage = (msg) => {
+      console.log(msg);
+    }
   
-
-    
   </script>
 </body>
 </html>

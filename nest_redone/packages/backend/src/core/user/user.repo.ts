@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Injectable()
-export class UserRepo {
+export class UserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repo: Repository<UserEntity>,
@@ -21,6 +21,12 @@ export class UserRepo {
   }
 
   async find(id: string) {
-    return this.repo.find({ where: { id } });
+    const user = await this.repo.findOne({ where: { id } });
+
+    if (!user) {
+      throw new Error('no user found');
+    }
+
+    return user;
   }
 }
