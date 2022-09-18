@@ -1,14 +1,21 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { CreateS3readable } from 'src/common/create-s3readable';
+import { minioConfig } from 'src/modules/config/config';
 
+@Injectable()
 export class S3Service {
   private instance: S3;
 
-  constructor() {
+  constructor(
+    @Inject(minioConfig.KEY)
+    private readonly config: ConfigType<typeof minioConfig>,
+  ) {
     this.instance = new S3({
-      accessKeyId: 'ozontech',
-      secretAccessKey: 'minio123',
-      endpoint: 'http://minio:9000',
+      accessKeyId: this.config.accessKeyId,
+      secretAccessKey: this.config.secretAccessKey,
+      endpoint: this.config.endpoint,
       s3ForcePathStyle: true, // needed with minio?
       signatureVersion: 'v4',
     });

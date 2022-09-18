@@ -31,20 +31,15 @@ export class UploadDownloadStreamsUsecase {
     let data = '';
 
     stream.on('data', async (chunk) => {
-      console.log('chunk.toString()', chunk.toString());
-
       data = (data + chunk.toString()) as string;
 
       const endOfString = data.endsWith('\n');
-      console.log('data', data);
 
       const passports = data.split('\n').map((item) => {
         return {
           data: item.replace(', ', ''),
         };
       });
-
-      console.log('passports', passports);
 
       if (!endOfString) {
         const end = passports.pop();
