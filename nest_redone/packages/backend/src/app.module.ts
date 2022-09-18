@@ -9,7 +9,7 @@ import { LoggingMiddleware } from './common/handlers/middleware/logging.middlewa
 import { ConfigurationModule } from './modules/config/config.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { AllowedRouteModule } from './usecase/allowed-route/allowed-route.module';
-import { DownloadsModule } from './usecase/downloads/downloads.module';
+import { GetExcelModule } from './usecase/get-excel/get-excel.module';
 import { FindUserModule } from './usecase/find-user/find-user.module';
 import { MathModule } from './usecase/math-micro/math.module';
 import { RegistrationModule } from './usecase/registration/registration.module';
@@ -25,7 +25,7 @@ export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
     AllowedRouteModule,
     RegistrationModule,
     MathModule,
-    DownloadsModule,
+    GetExcelModule,
     FindUserModule,
     UploadDownloadStreamsModule,
     RequestHandlersPlaygroundModule,

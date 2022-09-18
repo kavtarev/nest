@@ -12,28 +12,23 @@ import { map } from 'rxjs/operators';
 import * as XLXS from 'xlsx';
 
 @Injectable()
-export class XlxsIntercerptor implements NestInterceptor {
-  private readonly logger = new Logger();
+export class XlxsInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(XlxsInterceptor.name);
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     this.logger.log('we are in interceptor');
 
-    const response: any = context.switchToHttp().getResponse();
-    // this.logger.warn(123, response.locals);
-
     return next.handle().pipe(
       map((response) => {
-        console.log(response);
-        
-        this.hui(response);
+        return this.createStream(response);
       }),
     );
   }
 
-  hui(hui: any) {
+  createStream(response: any) {
     const book = XLXS.utils.book_new();
-    const sheet = XLXS.utils.json_to_sheet([hui]);
-    const name = 'NAME'
+    const sheet = XLXS.utils.json_to_sheet([response]);
+    const name = 'NAME';
     XLXS.utils.book_append_sheet(book, sheet);
 
     const buffer = XLXS.write(book, { type: 'buffer' });
