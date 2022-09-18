@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 import * as XLXS from 'xlsx';
 
 @Injectable()
-export class XslxsIntercerptor implements NestInterceptor {
+export class XlxsIntercerptor implements NestInterceptor {
   private readonly logger = new Logger();
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

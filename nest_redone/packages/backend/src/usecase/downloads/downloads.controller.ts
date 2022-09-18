@@ -8,13 +8,13 @@ import {
 } from '@nestjs/common';
 import { LoggingGuard } from 'src/common/handlers/guards/logging.guard';
 import { LoggingInterceptor } from 'src/common/handlers/interceptors/logging.interceptor';
-import { XslxsIntercerptor } from 'src/common/handlers/interceptors/xslxs.intercerptor';
+import { XlxsIntercerptor } from 'src/common/handlers/interceptors/xslxs.intercerptor';
 import { DownloadsUsecase } from './downloads.usecase';
 
 import * as XLXS from 'xlsx';
 
 @UseGuards(LoggingGuard)
-// @UseInterceptors(XslxsIntercerptor)
+// @UseInterceptors(XlxsIntercerptor)
 @Controller('/')
 export class DownloadsController {
   constructor(private readonly usecase: DownloadsUsecase) {}

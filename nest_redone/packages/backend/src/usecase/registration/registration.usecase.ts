@@ -10,7 +10,7 @@ export class RegistrationUsecase {
     private readonly auth: AuthService,
   ) {}
   async execute({ email, password }: IRegistration) {
-    const user = await this.userRepo.execute({ email, password });
+    const user = await this.userRepo.register({ email, password });
     const token = this.auth.issueToken(user.id);
 
     return token;

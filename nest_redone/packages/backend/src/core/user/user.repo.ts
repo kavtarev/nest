@@ -10,7 +10,7 @@ export class UserRepository {
     private readonly repo: Repository<UserEntity>,
   ) {}
 
-  async execute(data: Partial<UserEntity>) {
+  async register(data: Partial<UserEntity>) {
     const entity = {
       name: data.name,
       email: data.email,
