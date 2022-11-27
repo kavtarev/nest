@@ -15,9 +15,6 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     this.logger.log('we are in interceptor');
 
-    const response: any = context.switchToHttp().getResponse();
-    // this.logger.warn(123, response.locals);
-
-    return next.handle().pipe(tap());
+    return next.handle().pipe(tap(() => this.logger.log('after response')));
   }
 }

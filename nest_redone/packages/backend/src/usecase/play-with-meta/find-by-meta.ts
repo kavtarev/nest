@@ -25,10 +25,6 @@ export class FindByMeta {
       console.log(classMeta);
     });
 
-    // console.log('reflect', this.reflect());
-    // console.log(Reflect.ownKeys(this));
-    // console.log(this);
-
     return 1;
   }
 

@@ -8,6 +8,10 @@ import { LoggingInterceptor } from 'src/common/handlers/interceptors/logging.int
 export class RequestHandlersPlaygroundController {
   @Get('handlers')
   async execute() {
-    return;
+    let b = 0;
+    for (let i = 0; i < 1000; i++) {
+      b += i;
+    }
+    return b;
   }
 }

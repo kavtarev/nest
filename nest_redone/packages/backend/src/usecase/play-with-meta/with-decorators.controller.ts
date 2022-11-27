@@ -19,14 +19,6 @@ export class WithDecoratorsController {
     const meta = Reflect.getMetadata('with-meta', this['execute']);
     this.findByMeta.find('hui');
 
-    // Reflect.defineMetadata('name', 'hui', this);
-    // console.log(1111, Reflect.ownKeys(this));
-    // console.log(3333, Reflect.getMetadataKeys(this));
-
-    // const res = this.getMeta.execute();
-
-    // console.log({ meta });
-
     return meta;
   }
 }

@@ -1,7 +1,7 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -12,8 +12,6 @@ export class LoggingGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request: Request = context.switchToHttp().getRequest();
-
     this.logger.log('we are in logger guard');
 
     return true;
