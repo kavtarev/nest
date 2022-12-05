@@ -17,6 +17,7 @@ import { RequestHandlersPlaygroundController } from './usecase/request-handlers-
 import { RequestHandlersPlaygroundModule } from './usecase/request-handlers-playground/request-handlers-playground.module';
 import { UploadDownloadStreamsModule } from './usecase/upload-download-streams/upload-download-streams.module';
 import { PlayWithMetaModule } from './usecase/play-with-meta/play-with-meta.module';
+import { DownloadFileController } from './usecase/download-file/download-file.controller';
 
 export const baseModules = [ConfigurationModule, DatabaseModule];
 export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
@@ -33,6 +34,7 @@ export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
     PlayWithMetaModule,
   ],
   providers: [...baseProviders],
+  controllers: [DownloadFileController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
