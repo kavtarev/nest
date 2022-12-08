@@ -18,6 +18,7 @@ import { RequestHandlersPlaygroundModule } from './usecase/request-handlers-play
 import { UploadDownloadStreamsModule } from './usecase/upload-download-streams/upload-download-streams.module';
 import { PlayWithMetaModule } from './usecase/play-with-meta/play-with-meta.module';
 import { DownloadFileController } from './usecase/download-file/download-file.controller';
+import { SendEventsModule } from './usecase/play-with-events/send-events.module';
 
 export const baseModules = [ConfigurationModule, DatabaseModule];
 export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
@@ -32,6 +33,7 @@ export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
     UploadDownloadStreamsModule,
     RequestHandlersPlaygroundModule,
     PlayWithMetaModule,
+    SendEventsModule,
   ],
   providers: [...baseProviders],
   controllers: [DownloadFileController],
