@@ -3,27 +3,27 @@ import {
   ClientProxy,
   ClientProxyFactory,
   Transport,
+  TcpClientOptions,
 } from '@nestjs/microservices';
-
 @Injectable()
 export class MathUsecase {
   private client: ClientProxy;
 
   constructor() {
     this.client = ClientProxyFactory.create({
-      transport: Transport.RMQ,
+      transport: Transport.TCP,
       options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'main',
-        queueOptions: {
-          durable: false,
-        },
-        noAck: false,
+        host: 'backend_sockets',
+        port: 3101,
       },
     });
   }
 
   async execute(dto: number[]) {
-    return this.client.send('sum', dto);
+    const boob = this.client
+      .send<number, number[]>('sum', dto)
+      .subscribe((res) => console.log(res));
+
+    return 89;
   }
 }

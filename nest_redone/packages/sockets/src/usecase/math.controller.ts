@@ -6,11 +6,11 @@ export class MathController {
   @MessagePattern('sum')
   async sum(@Payload() data: number[], @Ctx() context: RmqContext) {
 
-    const channel = context.getChannelRef()
-    channel.ack(context.getMessage())
+    // const channel = context.getChannelRef()
+    // channel.ack(context.getMessage())
     
-    console.log(data);
+    console.log('in micro', data);
     
-    return 56;
+    return {data: 56};
   }
 }

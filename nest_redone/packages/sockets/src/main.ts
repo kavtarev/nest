@@ -13,16 +13,20 @@ import { AppModule } from './app.module';
 //     noAck: false
 //   },
 // }
-// async function bootstrap() {
-//   const app = await NestFactory.createMicroservice(AppModule, options)
-
-//   app.listen()
-// }
-
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, { transport: Transport.TCP, options: {
+    port: 3101,
+    host: '0.0.0.0'
+  } })
 
-  app.listen(3100)
+  await app.listen()
+  
 }
+
+// async function bootstrap() {
+//   const app = await NestFactory.create(AppModule)
+
+//   app.listen(3100)
+// }
 
 bootstrap();
