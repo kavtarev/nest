@@ -1,8 +1,10 @@
 import { Router } from '../router';
+import { Response } from '../response';
+import { Request } from '../request';
 
 export const MakeErrorRouter = new Router();
 
-MakeErrorRouter.get('some', (req, res) => {
+MakeErrorRouter.get('some', (req: Request, res: Response) => {
   res.end('whatever get')
 });
 

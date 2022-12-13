@@ -12,4 +12,16 @@ export class Response {
     this.res.write(data);
     this.res.end();
   }
+
+  end(data: string) {
+    this.res.end(data);
+  }
+
+  write(data: string) {
+    this.res.write(data)
+  }
+
+  setHeader(key: string, value: string) {
+    this.res.setHeader(key, value)
+  }
 }

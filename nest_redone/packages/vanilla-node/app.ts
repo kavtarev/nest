@@ -1,6 +1,8 @@
 import { createRoutesKey } from './common/create-routes.key.js';
 import * as http from 'http';
 import { Router } from './router';
+import { Request } from './request';
+import { Response } from './response';
 import { EventEmitter } from 'events';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -16,12 +18,14 @@ export class App {
     this.server = http.createServer();
  
     this.server.on('request', async (req, res) => {
+      const request = new Request(req);
+      const response = new Response(res);
       const route = createRoutesKey(req.url, req.method)
-      const result = this.emitter.emit(route, req, res)
-      const isStatic = this.isStaticReq(req)
+      const result = this.emitter.emit(route, request, response)
+      const isStatic = this.isStaticReq(request)
 
       if (isStatic) {
-        await this.sendStaticFiles(req, res)
+        await this.sendStaticFiles(request, response)
       }
 
       if(!result && !isStatic) {
@@ -30,7 +34,7 @@ export class App {
     })
   }
 
-  get(path: string, handler: (req: http.IncomingMessage, res: http.ServerResponse) => void) {
+  get(path: string, handler: (req: Request, res: Response) => void) {
     const route = createRoutesKey(path, 'GET');
 
     this.emitter.on(route, (req, res) => {
@@ -38,7 +42,7 @@ export class App {
     })
   }
 
-  post(path: string, handler: (req: http.IncomingMessage, res: http.ServerResponse) => void) {
+  post(path: string, handler: (req: Request, res: Response) => void) {
     const route = createRoutesKey(path, 'POST');
 
     this.emitter.on(route, (req, res) => {
@@ -55,7 +59,7 @@ export class App {
     this.staticFolder = staticFolder;
   }
 
-  async sendStaticFiles(req: http.IncomingMessage, res: http.ServerResponse ) {
+  async sendStaticFiles(req: Request, res: Response ) {
     res.setHeader(
       'Content-Type', 
       path.extname(req.url) === '.js' 
@@ -63,7 +67,7 @@ export class App {
         : 'text/css'
       )
 
-    fs.createReadStream(path.join(__dirname, '..', this.staticFolder, path.basename(req.url))).pipe(res)
+    fs.createReadStream(path.join(__dirname, '..', this.staticFolder, path.basename(req.url))).pipe(res.res)
   }
 
   private checkEventsForDuplicates(path: string, routes: Map<string, (req, res,) => void>) {
@@ -83,11 +87,11 @@ export class App {
     })
   }
 
-  private isStaticReq(req: http.IncomingMessage): boolean {
+  private isStaticReq(req: Request): boolean {
     return this.staticTypes.includes(path.extname(req.url));
   }
 
   listen(port: number) {
-    this.server.listen(port, () => { console.log(`vanila-node is up on PORT: ${port}`) })
+    this.server.listen(port, () => { console.log(`vanilla-node is up on PORT: ${port}`) })
   }
 }

@@ -1,27 +1,28 @@
-import { IncomingMessage, ServerResponse } from 'http';
 import { createRoutesKey } from './common/create-routes.key.js';
+import { Request } from './request';
+import { Response } from './response';
 
 export class Router {
   private routes: Map<
     string,
-    (req: IncomingMessage, res: ServerResponse) => void
+    (req: Request, res: Response) => void
   > = new Map() 
 
   getRoutes() { return this.routes }
 
-  get(route: string, handler: (req: IncomingMessage, res: ServerResponse) => void) {
+  get(route: string, handler: (req: Request, res: Response) => void) {
     const path = createRoutesKey(route, 'GET')
 
     this.addToRoutes(path, handler)
   }
 
-  post(route: string, handler: (req: IncomingMessage, res: ServerResponse) => void) {
+  post(route: string, handler: (req: Request, res: Response) => void) {
     const path = createRoutesKey(route, 'POST')
 
     this.addToRoutes(path, handler)
   }
 
-  private addToRoutes(path: string, handler: (req: IncomingMessage, res: ServerResponse) => void) {
+  private addToRoutes(path: string, handler: (req: Request, res: Response) => void) {
     if (this.routes.has(path)) {
       throw new Error('no path duplicates')
     }
