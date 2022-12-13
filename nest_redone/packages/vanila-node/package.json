@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --test"
+    "start": "nodemon dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.11.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
