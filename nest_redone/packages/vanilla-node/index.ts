@@ -19,6 +19,19 @@ app.post('/', (req, res) => {
   res.end('[{"what": "ever"}, {"what": "ever"}]');
 });
 
+app.use((req,res,next) => {
+  console.log('first middleware');
+  next()
+})
+app.use((req,res,next) => {
+  console.log('second middleware');
+  next()
+})
+app.use((req,res,next) => {
+  console.log('third middleware');
+  next()
+})
+
 app.addRouter('/', WhatEverRouter)
 
 

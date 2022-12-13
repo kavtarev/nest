@@ -12,6 +12,7 @@ export class App {
   private server: http.Server;
   private staticFolder: string;
   private staticTypes: string[] = ['.js', '.css']
+  private middleWares: ((req: Request, res: Response, next: any) => void)[] = []
 
   constructor() {
     this.emitter = new EventEmitter();
@@ -20,18 +21,23 @@ export class App {
     this.server.on('request', async (req, res) => {
       const request = new Request(req);
       const response = new Response(res);
-      const route = createRoutesKey(req.url, req.method)
-      const result = this.emitter.emit(route, request, response)
       const isStatic = this.isStaticReq(request)
 
       if (isStatic) {
         await this.sendStaticFiles(request, response)
       }
+      this.runMiddleWares(request, response);
+      const route = createRoutesKey(req.url, req.method)
+      const result = this.emitter.emit(route, request, response)
 
       if(!result && !isStatic) {
         res.end('psina sutulaya')
       }
     })
+  }
+
+  use(middleWare: (req: Request, res: Response, next: any) => void) {
+    this.middleWares.push(middleWare);
   }
 
   get(path: string, handler: (req: Request, res: Response) => void) {
@@ -89,6 +95,13 @@ export class App {
 
   private isStaticReq(req: Request): boolean {
     return this.staticTypes.includes(path.extname(req.url));
+  }
+
+  private runMiddleWares(req: Request, res: Response, i: number = 0) {
+    if (i < this.middleWares.length){
+      let mid = this.middleWares[i];
+      mid(req, res, this.runMiddleWares.bind(this, req, res, i + 1))
+    }
   }
 
   listen(port: number) {
