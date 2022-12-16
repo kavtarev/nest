@@ -32,6 +32,16 @@ app.use((req,res,next) => {
   next()
 })
 
+app.use('/', (req,res,next) => {
+  console.log('route middleware');
+  next()
+})
+
+app.use('/', (req,res,next) => {
+  console.log('another route middleware');
+  next()
+})
+
 app.addRouter('/', WhatEverRouter)
 
 

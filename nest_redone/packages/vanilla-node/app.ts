@@ -7,12 +7,14 @@ import { EventEmitter } from 'events';
 import * as path from 'path';
 import * as fs from 'fs';
 
+type MiddleWare = (req: Request, res: Response, next: any) => void
 export class App {
   private emitter: EventEmitter;
   private server: http.Server;
   private staticFolder: string;
   private staticTypes: string[] = ['.js', '.css']
-  private middleWares: ((req: Request, res: Response, next: any) => void)[] = []
+  private middleWares: MiddleWare[] = []
+  private routeMiddleWares: Map<string, MiddleWare[] > = new Map();
 
   constructor() {
     this.emitter = new EventEmitter();
@@ -22,23 +24,43 @@ export class App {
       const request = new Request(req);
       const response = new Response(res);
       const isStatic = this.isStaticReq(request)
+      const isFavicon = this.isFavicon(request)
 
       if (isStatic) {
         await this.sendStaticFiles(request, response)
       }
-      this.runMiddleWares(request, response);
-      const route = createRoutesKey(req.url, req.method)
-      const result = this.emitter.emit(route, request, response)
 
-      if(!result && !isStatic) {
-        res.end('psina sutulaya')
+      if(!isStatic && !isFavicon) {
+        this.runMiddleWares(request, response);
+        this.runRouteMiddleWares(req.url, request, response)
+        const route = createRoutesKey(req.url, req.method)
+        const result = this.emitter.emit(route, request, response)
+        if(!result && !isStatic) {
+          res.end('psina sutulaya')
+        }
       }
     })
   }
 
-  use(middleWare: (req: Request, res: Response, next: any) => void) {
-    this.middleWares.push(middleWare);
+  use(
+    path: string | MiddleWare,
+    middleWare?: MiddleWare
+  ) {
+    if (typeof path === 'function') {
+      this.middleWares.push(path);
+      return;
+    }
+
+    if (typeof path === 'string' && middleWare && typeof middleWare === 'function') {
+      const middleWares = this.routeMiddleWares.get(path) || [];
+      middleWares.push(middleWare);
+      this.routeMiddleWares.set(path, middleWares);
+      return;
+    }
+
+    throw new Error('middleware should be a function');
   }
+
 
   get(path: string, handler: (req: Request, res: Response) => void) {
     const route = createRoutesKey(path, 'GET');
@@ -97,10 +119,27 @@ export class App {
     return this.staticTypes.includes(path.extname(req.url));
   }
 
+  private isFavicon(req: Request): boolean {
+    return req.url === '/favicon.ico'
+  }
+
   private runMiddleWares(req: Request, res: Response, i: number = 0) {
     if (i < this.middleWares.length){
-      let mid = this.middleWares[i];
+      let mid = this.middleWares[i];      
       mid(req, res, this.runMiddleWares.bind(this, req, res, i + 1))
+    }
+  }
+
+  private runRouteMiddleWares(route: string, req: Request, res: Response, i: number = 0) {
+    const middleWares = this.routeMiddleWares.get(route);
+    
+    if (!middleWares) {
+      return
+    }
+    
+    if (i < middleWares.length){
+      let mid = middleWares[i];      
+      mid(req, res, this.runRouteMiddleWares.bind(this, route, req, res, i + 1))
     }
   }
 
