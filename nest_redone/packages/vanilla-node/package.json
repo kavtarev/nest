@@ -1,16 +1,20 @@
 {
-  "name": "vanilla-node",
-  "version": "1.0.0",
+  "name": "@nest_redone/vanilla-node",
+  "version": "0.0.1",
   "description": "",
+  "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "nodemon dist/index.js"
+    "start": "nodemon dist/index.js",
+    "try": "node one.js & node two.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.11.10"
+    "@types/node": "^18.11.10",
+    "@types/pg": "^8.6.5",
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

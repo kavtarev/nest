@@ -19,10 +19,14 @@ export class App {
   constructor() {
     this.emitter = new EventEmitter();
     this.server = http.createServer();
- 
-    this.server.on('request', async (req, res) => {
+
+    this.server.on('request', async (req: http.IncomingMessage & { body: any }, res) => {
+      
       const request = new Request(req);
       const response = new Response(res);
+
+      await this.parseBody(request, response);
+
       const isStatic = this.isStaticReq(request)
       const isFavicon = this.isFavicon(request)
 
@@ -34,10 +38,40 @@ export class App {
         this.runMiddleWares(request, response);
         this.runRouteMiddleWares(req.url, request, response)
         const route = createRoutesKey(req.url, req.method)
+       
         const result = this.emitter.emit(route, request, response)
-        if(!result && !isStatic) {
-          res.end('psina sutulaya')
+          if(!result && !isStatic) {
+            res.end('psina sutulaya')
+          }
+      }
+    })
+  }
+  private async parseBody(request: Request, response: Response) {
+    let tempBody: string = '';
+
+    request.req.on('data', chunk => {
+      tempBody += chunk.toString();
+
+      if (tempBody.length > 1e6) { 
+        // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+        request.req.destroy();
+    }
+    })
+
+    request.req.on('end', () => {      
+      try {
+        request.body = JSON.parse(tempBody);
+        this.runMiddleWares(request, response);
+        this.runRouteMiddleWares(request.req.url, request, response)
+        const route = createRoutesKey(request.req.url, request.req.method)
+       
+        const result = this.emitter.emit(route, request, response)
+        if(!result) {
+          response.res.end('psina sutulaya')
         }
+
+      } catch(e) {        
+        request.req.destroy()
       }
     })
   }
