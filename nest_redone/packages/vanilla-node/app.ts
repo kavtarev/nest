@@ -27,25 +27,16 @@ export class App {
 
       await this.parseBody(request, response);
 
-      const isStatic = this.isStaticReq(request)
-      const isFavicon = this.isFavicon(request)
-
-      if (isStatic) {
+      if (this.isStaticReq(request)) {
         await this.sendStaticFiles(request, response)
       }
 
-      if(!isStatic && !isFavicon) {
-        this.runMiddleWares(request, response);
-        this.runRouteMiddleWares(req.url, request, response)
-        const route = createRoutesKey(req.url, req.method)
-       
-        const result = this.emitter.emit(route, request, response)
-          if(!result && !isStatic) {
-            res.end('psina sutulaya')
-          }
+      if (this.shouldRunRequest(request)) {
+        this.run(request, response);
       }
     })
   }
+
   private async parseBody(request: Request, response: Response) {
     let tempBody: string = '';
 
@@ -61,19 +52,23 @@ export class App {
     request.req.on('end', () => {      
       try {
         request.body = JSON.parse(tempBody);
-        this.runMiddleWares(request, response);
-        this.runRouteMiddleWares(request.req.url, request, response)
-        const route = createRoutesKey(request.req.url, request.req.method)
-       
-        const result = this.emitter.emit(route, request, response)
-        if(!result) {
-          response.res.end('psina sutulaya')
-        }
-
+        this.run(request, response);
       } catch(e) {        
         request.req.destroy()
       }
     })
+  }
+
+  private run(request: Request, response: Response) {
+    this.runMiddleWares(request, response);
+    this.runRouteMiddleWares(request.req.url, request, response)
+
+    const route = createRoutesKey(request.req.url, request.req.method)
+    const result = this.emitter.emit(route, request, response)
+
+    if(!result && !this.isStaticReq(request)) {
+      response.res.end('psina sutulaya')
+    }
   }
 
   use(
@@ -94,7 +89,6 @@ export class App {
 
     throw new Error('middleware should be a function');
   }
-
 
   get(path: string, handler: (req: Request, res: Response) => void) {
     const route = createRoutesKey(path, 'GET');
@@ -147,6 +141,14 @@ export class App {
     routes.forEach((handler, routerPath) => {
       this.emitter.on(`${path}${routerPath}`, (req, res) => handler(req, res))
     })
+  }
+
+  private shouldRunRequest(req: Request): boolean {
+    return ! this.isStreamMethod(req) && !this.isStaticReq(req) && !this.isFavicon(req);
+  }
+
+  private isStreamMethod(req: Request): boolean {
+    return req.req.method === 'POST' || req.req.method === 'PUT';
   }
 
   private isStaticReq(req: Request): boolean {
