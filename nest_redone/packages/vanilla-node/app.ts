@@ -25,13 +25,13 @@ export class App {
       const request = new Request(req);
       const response = new Response(res);
 
-      await this.parseBody(request, response);
-
       if (this.isStaticReq(request)) {
-        await this.sendStaticFiles(request, response)
+        this.sendStaticFiles(request, response)
       }
-
-      if (this.shouldRunRequest(request)) {
+      
+      if (this.isStreamMethod(request)) {      
+        this.parseBody(request, response);
+      } else {
         this.run(request, response);
       }
     })
@@ -46,8 +46,8 @@ export class App {
       if (tempBody.length > 1e6) { 
         // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
         request.req.destroy();
-    }
-    })
+      }
+    });
 
     request.req.on('end', () => {      
       try {
@@ -143,9 +143,9 @@ export class App {
     })
   }
 
-  private shouldRunRequest(req: Request): boolean {
-    return ! this.isStreamMethod(req) && !this.isStaticReq(req) && !this.isFavicon(req);
-  }
+  // private isStreamRequest(req: Request): boolean {    
+  //   return this.isStreamMethod(req) && !this.isStaticReq(req) && !this.isFavicon(req);
+  // }
 
   private isStreamMethod(req: Request): boolean {
     return req.req.method === 'POST' || req.req.method === 'PUT';
@@ -179,7 +179,7 @@ export class App {
     }
   }
 
-  listen(port: number) {
-    this.server.listen(port, () => { console.log(`vanilla-node is up on PORT: ${port}`) })
+  listen(port: number, callback?: () => void) {
+    this.server.listen(port, callback)
   }
 }

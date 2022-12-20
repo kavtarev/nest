@@ -10,7 +10,7 @@ btn.addEventListener('click', () => {
 whateverBtn.addEventListener('click', async () => {
   const res = await fetch('http://localhost:3003', {
     method: 'POST',
-    body: JSON.stringify({ what: 'ever' })
+    body: JSON.stringify([{ what: 'ever' }])
   });
 
   let json = await res.json();

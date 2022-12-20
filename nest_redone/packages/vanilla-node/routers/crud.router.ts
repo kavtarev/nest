@@ -21,7 +21,7 @@ CrudRouter.get('all', async (req: Request, res: Response) => {
 CrudRouter.post('post', async (req: Request, res: Response) => {
   try {
     const result = await pool.query(`
-      insert into test_pool name values($1);
+      insert into test_pool (name) values($1);
     `, [req.body['hui']]);
 
     res.end(JSON.stringify(result))
