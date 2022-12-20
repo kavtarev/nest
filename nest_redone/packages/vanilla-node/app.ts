@@ -143,10 +143,6 @@ export class App {
     })
   }
 
-  // private isStreamRequest(req: Request): boolean {    
-  //   return this.isStreamMethod(req) && !this.isStaticReq(req) && !this.isFavicon(req);
-  // }
-
   private isStreamMethod(req: Request): boolean {
     return req.req.method === 'POST' || req.req.method === 'PUT';
   }

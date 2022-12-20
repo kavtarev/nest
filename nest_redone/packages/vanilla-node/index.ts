@@ -5,11 +5,11 @@ import * as path from 'path';
 import { Response } from './response'
 import { Request } from './request'
 import { CrudRouter } from './routers/crud.router';
+
 const PORT = 3003;
 let app = new App();
 
-app.listen(PORT, () => { console.log(`server is up on port: ${PORT}`);
-});
+app.listen(PORT, () => { console.log(`server is up on port: ${PORT}`)});
 app.registerStatic('frontend');
 
 app.get('/', (req: Request, res: Response) => {
