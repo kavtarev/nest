@@ -6,12 +6,12 @@ export class Request {
   query: Record<string, unknown>;
   params: Record<string, unknown>;
 
-  constructor(req:http.IncomingMessage & { body: any }) {
+  constructor(req: http.IncomingMessage & { body: any }) {
     this.req = req;
-    this.body = req.body
+    this.body = req.body;
   }
 
   get url() {
-    return this.req.url
+    return this.req.url;
   }
 }

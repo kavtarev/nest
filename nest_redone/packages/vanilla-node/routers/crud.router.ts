@@ -11,27 +11,29 @@ CrudRouter.get('all', async (req: Request, res: Response) => {
       select * from test_pool;
     `);
 
-    res.end(JSON.stringify(result))
-  } catch(e) {
+    res.end(JSON.stringify(result));
+  } catch (e) {
     console.log(e);
-    res.end('sorry')
+    res.end('sorry');
   }
 });
 
 CrudRouter.post('post', async (req: Request, res: Response) => {
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       insert into test_pool (name) values($1);
-    `, [req.body['hui']]);
+    `,
+      [req.body['hui']]
+    );
 
-    res.end(JSON.stringify(result))
-  } catch(e) {
+    res.end(JSON.stringify(result));
+  } catch (e) {
     console.log(e);
-    res.end('sorry')
+    res.end('sorry');
   }
 });
 
 CrudRouter.post('some', (req: Request, res: Response) => {
-  res.end('whatever get')
+  res.end('whatever get');
 });
-

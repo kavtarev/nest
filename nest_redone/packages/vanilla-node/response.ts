@@ -3,7 +3,7 @@ import * as http from 'http';
 export class Response {
   res: http.ServerResponse;
 
-  constructor(res:http.ServerResponse) {
+  constructor(res: http.ServerResponse) {
     this.res = res;
   }
 
@@ -18,10 +18,10 @@ export class Response {
   }
 
   write(data: string) {
-    this.res.write(data)
+    this.res.write(data);
   }
 
   setHeader(key: string, value: string) {
-    this.res.setHeader(key, value)
+    this.res.setHeader(key, value);
   }
 }
