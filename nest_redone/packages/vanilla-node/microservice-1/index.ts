@@ -6,60 +6,82 @@ import { Response } from '../own-express/response';
 import { Request } from '../own-express/request';
 import { CrudRouter } from './routers/crud.router';
 import * as Sentry from '@sentry/node';
-import "@sentry/tracing";
+import '@sentry/tracing';
+import * as client from 'amqplib';
+import { Connection, Channel } from 'amqplib';
 
 Sentry.init({
   dsn: 'https://8da54677498f40cc87649f420d08bd7e@o4504412942237696.ingest.sentry.io/4504412945711104',
   tracesSampleRate: 1.0,
 });
 
-const PORT = 3003;
-const app = new App();
+async function start() {
+  const connection: Connection = await client.connect(
+    'amqp://username:password@localhost:5672'
+  );
 
-app.listen(PORT, () => {
-  console.log(`server is up on port: ${PORT}`);
-});
-app.registerStatic('frontend');
+  // Create a channel
+  const channel: Channel = await connection.createChannel();
 
-app.get('/', (req: Request, res: Response) => {
-  try {
-    throw new Error('sentry!');
-  } catch (e) {
-    Sentry.captureEvent(e);
-    Sentry.captureException(e);
-  }
+  // Makes the queue available to the client
+  await channel.assertQueue('myQueue');
 
-  fs.createReadStream(
-    path.join(__dirname, '..', 'frontend', 'index.html')
-  ).pipe(res.res);
-});
+  const PORT = 3003;
+  const app = new App();
 
-app.post('/', (req, res) => {
-  const boob = JSON.stringify(req.body);
+  app.listen(PORT, () => {
+    console.log(`server is up on port: ${PORT}`);
+  });
+  app.registerStatic('frontend');
 
-  res.end(boob as unknown as string);
-});
+  app.get('/', (req: Request, res: Response) => {
+    try {
+      throw new Error('sentry!');
+    } catch (e) {
+      Sentry.captureEvent(e);
+      Sentry.captureException(e);
+    }
 
-app.addRouter('/', WhatEverRouter);
-app.addRouter('/api/', CrudRouter);
+    fs.createReadStream(
+      path.join(__dirname, '..', 'frontend', 'index.html')
+    ).pipe(res.res);
+  });
 
-// app.use((req,res,next) => {
-//   console.log('first middleware');
-//   next()
-// })
-// app.use((req,res,next) => {
-//   console.log('second middleware');
-//   next()
-// })
-// app.use((req,res,next) => {
-//   console.log('third middleware');
-//   next()
-// })
-// app.use('/', (req,res,next) => {
-//   console.log('route middleware');
-//   next()
-// })
-// app.use('/', (req,res,next) => {
-//   console.log('another route middleware');
-//   next()
-// })
+  app.get('/rabbit', (req: Request, res: Response) => {
+    //Send a message to the queue
+    channel.sendToQueue('myQueue', Buffer.from('message'));
+    res.end('sended to rabbit!');
+  });
+
+  app.post('/', (req, res) => {
+    const boob = JSON.stringify(req.body);
+
+    res.end(boob as unknown as string);
+  });
+
+  app.addRouter('/', WhatEverRouter);
+  app.addRouter('/api/', CrudRouter);
+
+  // app.use((req,res,next) => {
+  //   console.log('first middleware');
+  //   next()
+  // })
+  // app.use((req,res,next) => {
+  //   console.log('second middleware');
+  //   next()
+  // })
+  // app.use((req,res,next) => {
+  //   console.log('third middleware');
+  //   next()
+  // })
+  // app.use('/', (req,res,next) => {
+  //   console.log('route middleware');
+  //   next()
+  // })
+  // app.use('/', (req,res,next) => {
+  //   console.log('another route middleware');
+  //   next()
+  // })
+}
+
+start();
