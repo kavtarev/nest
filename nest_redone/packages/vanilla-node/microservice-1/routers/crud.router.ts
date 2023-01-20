@@ -1,7 +1,7 @@
-import { Request } from '../request';
-import { Response } from '../response';
-import { Router } from '../router';
-import { pool } from '../pg/pg';
+import { Request } from '../../own-express/request';
+import { Response } from '../../own-express/response';
+import { Router } from '../../own-express/router';
+import { pool } from '../../pg/pg';
 
 export const CrudRouter = new Router();
 

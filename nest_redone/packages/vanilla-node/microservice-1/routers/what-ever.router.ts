@@ -1,6 +1,6 @@
-import { Request } from '../request';
-import { Response } from '../response';
-import { Router } from '../router';
+import { Request } from '../../own-express/request';
+import { Response } from '../../own-express/response';
+import { Router } from '../../own-express/router';
 
 export const WhatEverRouter = new Router();
 

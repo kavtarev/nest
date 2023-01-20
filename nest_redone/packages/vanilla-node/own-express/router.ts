@@ -1,4 +1,4 @@
-import { createRoutesKey } from './common/create-routes.key.js';
+import { createRoutesKey } from '../common/create-routes.key.js';
 import { Request } from './request';
 import { Response } from './response';
 

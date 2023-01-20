@@ -1,6 +1,6 @@
-import { Router } from '../router';
-import { Response } from '../response';
-import { Request } from '../request';
+import { Router } from '../../own-express/router';
+import { Response } from '../../own-express/response';
+import { Request } from '../../own-express/request';
 
 export const MakeErrorRouter = new Router();
 
