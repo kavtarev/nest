@@ -15,10 +15,12 @@
     "@types/node": "^18.11.10",
     "@types/pg": "^8.6.5",
     "amqplib": "^0.10.3",
+    "nodemailer": "^6.9.0",
     "pg": "^8.8.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.1",
+    "@types/nodemailer": "^6.4.7",
     "nodemon": "^2.0.20"
   }
 }

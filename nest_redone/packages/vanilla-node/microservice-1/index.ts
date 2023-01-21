@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 import * as client from 'amqplib';
 import { Connection, Channel } from 'amqplib';
+import { Queues } from '../rabbit/queues';
 
 Sentry.init({
   dsn: 'https://8da54677498f40cc87649f420d08bd7e@o4504412942237696.ingest.sentry.io/4504412945711104',
@@ -24,7 +25,7 @@ async function start() {
   const channel: Channel = await connection.createChannel();
 
   // Makes the queue available to the client
-  await channel.assertQueue('myQueue');
+  await channel.assertQueue(Queues.send_mail);
 
   const PORT = 3003;
   const app = new App();
@@ -47,9 +48,12 @@ async function start() {
     ).pipe(res.res);
   });
 
-  app.get('/rabbit', (req: Request, res: Response) => {
-    //Send a message to the queue
-    channel.sendToQueue('myQueue', Buffer.from('message'));
+  app.post('/rabbit/sendmail', (req: Request, res: Response) => {
+    // Send a message to the queue
+    channel.sendToQueue(
+      Queues.send_mail,
+      Buffer.from(JSON.stringify(req.body.hui))
+    );
     res.end('sended to rabbit!');
   });
 
