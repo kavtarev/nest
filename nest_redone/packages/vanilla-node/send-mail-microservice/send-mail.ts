@@ -6,16 +6,16 @@ export async function sendMail(msg: string) {
     nodemailer.createTransport({
       service: 'Mail.ru',
       auth: {
-        
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
 
-  // send mail with defined transport object
   await transporter.sendMail({
-    from: '"Fred Foo 👻"', // sender address
-    to: '', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: msg, // plain text body
-    html: '<b>Hello world?</b>', // html body
+    from: '"Fred Foo 👻"',
+    to: process.env.MAIL_RECEIVER,
+    subject: 'Hello ✔',
+    text: msg,
+    html: '<b>Hello world?</b>',
   });
 }
