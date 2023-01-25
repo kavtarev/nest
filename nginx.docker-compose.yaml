@@ -4,7 +4,7 @@ services:
   nginx:
     image: nginx
     volumes:
-    - ./docker-nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+    - ./docker-nginx/conf/nginx.conf:/etc/nginx/nginx.conf
     - ./docker-nginx/images:/data/images
     - ./docker-nginx/html:/data/html
 
