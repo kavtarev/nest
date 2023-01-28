@@ -1,6 +1,20 @@
 version: '3.2'
 
 services:
+  server:
+    image: node:16-alpine
+    expose:
+      - 4444
+    working_dir:
+      /app
+    volumes:
+      - ./server.js:/app/server.js
+    command:
+      - sh
+      - -c
+      - |
+        node server.js
+  
   nginx:
     image: nginx
     volumes:
