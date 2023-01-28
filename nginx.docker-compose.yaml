@@ -5,8 +5,8 @@ services:
     image: nginx
     volumes:
     - ./docker-nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-    - ./docker-nginx/images:/data/images
-    - ./docker-nginx/html:/data/html
+    - ./docker-nginx/images:/data/images:delegated
+    - ./docker-nginx/html:/data/html:cached
     - ./docker-nginx/upl:/data/upl
 
     ports:
