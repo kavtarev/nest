@@ -2,13 +2,15 @@ version: '3.2'
 
 services:
   server:
-    image: node:16-alpine
+    image: node:18-alpine
     expose:
       - 4444
     working_dir:
       /app
     volumes:
       - ./server.js:/app/server.js
+    ports:
+      - 4444:4444
     command:
       - sh
       - -c
@@ -22,6 +24,7 @@ services:
     - ./docker-nginx/images:/data/images:delegated
     - ./docker-nginx/html:/data/html:cached
     - ./docker-nginx/upl:/data/upl
+    - ./docker-nginx/hosts:/etc/hosts
 
     ports:
     - "80:80"
