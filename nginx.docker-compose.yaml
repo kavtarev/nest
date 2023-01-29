@@ -4,13 +4,13 @@ services:
   server:
     image: node:18-alpine
     expose:
-      - 4444
+      - 3000
     working_dir:
       /app
     volumes:
       - ./server.js:/app/server.js
     ports:
-      - 4444:4444
+      - 3000:3000
     command:
       - sh
       - -c
