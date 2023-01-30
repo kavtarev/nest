@@ -1,0 +1,5 @@
+- CRUD
+- web sockets
+- load balance
+- headers
+- $uri
