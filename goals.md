@@ -10,5 +10,3 @@ nginx
 - load balance
 - headers
 - $uri
-
-
