@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@nestjs/event-emitter": "^1.3.1",
+    "@nestjs/swagger": "^6.2.1",
     "@sentry/node": "^7.28.1",
     "@sentry/tracing": "^7.28.1",
     "amqp-connection-manager": "^4.1.6",

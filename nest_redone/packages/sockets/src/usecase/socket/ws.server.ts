@@ -1,6 +1,6 @@
 import { OnApplicationBootstrap } from '@nestjs/common';
 import { IncomingMessage } from 'http';
-import { WebSocketServer, WebSocket, Server,} from 'ws';
+import { WebSocketServer, WebSocket, Server} from 'ws';
 import { MessageHandler } from './message-handler';
 import { MessageDto } from './ws.interface';
 
@@ -72,10 +72,9 @@ export class WsServer implements OnApplicationBootstrap {
     });
 
   }
-
   emitMessage(ip: string, message: MessageDto) {
     const socket = this.clientsMap.get(ip)
 
-    socket.send(message);
+    // socket.send();
   }
 }
