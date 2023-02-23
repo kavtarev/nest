@@ -27,7 +27,29 @@ services:
       - |
         cd nest_redone/packages/backend; npm run start:dev
   
-         cd nest_redone/packages/sockets; npm run start:dev
+  backend_sockets:
+    image: node:16-alpine
+    environment:
+      - DATABASE_HOST=database_sockets
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_DATABASE=postgres
+      - JWT_SECRET=secret
+    expose:
+      - 3100
+    ports:
+      - 3101:3100
+      - 8080:8080
+    working_dir:
+      /app
+    volumes:
+      - .:/app
+    command:
+      - sh
+      - -c
+      - |
+        cd nest_redone/packages/sockets; npm run start:dev
   
   database:
     image: postgres:11-alpine
@@ -40,14 +62,19 @@ services:
     ports:
       - 5432:5432
 
+  database_sockets:
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - nest_redone_sockets:/var/lib/postgresql/data
+
   rabbitmq:
     image: rabbitmq
     ports:
       - '5672:5672'
-
-  redis:
-    image: redis:7.0.8-alpine
-    command: redis-rerver
 
   minio:
    image: minio/minio:latest
@@ -68,4 +95,5 @@ services:
 
 volumes:
   nest_redone:
+  nest_redone_sockets:
   minio-storage:

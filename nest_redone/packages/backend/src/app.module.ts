@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -19,11 +20,13 @@ import { UploadDownloadStreamsModule } from './usecase/upload-download-streams/u
 import { PlayWithMetaModule } from './usecase/play-with-meta/play-with-meta.module';
 import { DownloadFileController } from './usecase/download-file/download-file.controller';
 import { SendEventsModule } from './usecase/play-with-events/send-events.module';
+import { PlayWCacheController } from './usecase/play-w-cache/play-w-cache.controller';
 
 export const baseModules = [ConfigurationModule, DatabaseModule];
 export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
 @Module({
   imports: [
+    CacheModule.register(),
     ...baseModules,
     AllowedRouteModule,
     RegistrationModule,
@@ -36,7 +39,7 @@ export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
     SendEventsModule,
   ],
   providers: [...baseProviders],
-  controllers: [DownloadFileController],
+  controllers: [DownloadFileController, PlayWCacheController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
