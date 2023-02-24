@@ -20,6 +20,7 @@
     "aws-sdk": "^2.1204.0",
     "cache-manager": "^5.1.1",
     "cache-manager-redis-store": "^3.0.1",
+    "cookie-parser": "^1.4.6",
     "docx": "^7.7.0",
     "pdfkit": "^0.13.0",
     "pg": "^8.8.0",
@@ -29,6 +30,7 @@
     "./nest_redone/packages/*"
   ],
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
     "@types/multer": "^1.4.7",
     "@types/pdfkit": "^0.12.8"
   }
