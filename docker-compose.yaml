@@ -27,7 +27,6 @@ services:
       - |
         cd nest_redone/packages/backend; npm run start:dev
   
-         cd nest_redone/packages/sockets; npm run start:dev
   
   database:
     image: postgres:11-alpine
@@ -47,7 +46,8 @@ services:
 
   redis:
     image: redis:7.0.8-alpine
-    command: redis-rerver
+    ports:
+      - '6379:6379'
 
   minio:
    image: minio/minio:latest

@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common';
-import { IHttpService } from '../../modules/http-module/http-service.interface';
 import { HTTP_SERVICE } from '../../modules/http-module/constants';
+import { IHttpService } from '../../modules/http-module/http-service.interface';
 import { AllowedRouteUsecase } from './allowed-route.usecase';
 
 @Controller('/')

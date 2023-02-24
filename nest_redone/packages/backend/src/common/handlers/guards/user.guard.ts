@@ -36,6 +36,8 @@ export class AuthGuard implements CanActivate {
       throw new BadRequestException('no user pal');
     }
 
+    req.user = user;
+
     return true;
   }
 }

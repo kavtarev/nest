@@ -24,9 +24,31 @@ import { PlayWCacheController } from './usecase/play-w-cache/play-w-cache.contro
 
 export const baseModules = [ConfigurationModule, DatabaseModule];
 export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
+
+import type { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-store';
+import { LoginController } from './usecase/login/login.controller';
+import { AuthModule } from './core/auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserRepository } from './core/user/user.repo';
+import { UserEntity } from './core/user/user.entity';
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.registerAsync<RedisClientOptions>({
+      useFactory: async () => {
+        const store = await redisStore({
+          socket: {
+            host: 'redis',
+            port: 6379,
+          },
+          ttl: 100,
+        });
+
+        return {
+          store: () => store,
+        };
+      },
+    }),
     ...baseModules,
     AllowedRouteModule,
     RegistrationModule,
@@ -37,9 +59,11 @@ export const baseProviders = [{ provide: APP_PIPE, useClass: ValidationPipe }];
     RequestHandlersPlaygroundModule,
     PlayWithMetaModule,
     SendEventsModule,
+    AuthModule,
+    TypeOrmModule.forFeature([UserEntity]),
   ],
-  providers: [...baseProviders],
-  controllers: [DownloadFileController, PlayWCacheController],
+  providers: [...baseProviders, UserRepository],
+  controllers: [DownloadFileController, PlayWCacheController, LoginController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

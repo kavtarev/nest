@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request } from '@nestjs/common';
 import { RegistrationDto } from './registration.dto';
 import { RegistrationUsecase } from './registration.usecase';
 
@@ -6,8 +6,8 @@ import { RegistrationUsecase } from './registration.usecase';
 export class RegistrationController {
   constructor(private readonly usecase: RegistrationUsecase) {}
   @Post('register')
-  async register(@Body() body: RegistrationDto) {
-    const token = await this.usecase.execute(body);
+  async register(@Body() body: RegistrationDto, @Request() req: Request) {
+    const token = await this.usecase.execute(body, req);
     return token;
   }
 }
