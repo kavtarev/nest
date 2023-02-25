@@ -22,6 +22,9 @@ export class TokenEntity {
   @Column('text', { nullable: true })
   name: string;
 
+  @Column('text')
+  userId: number;
+
   @CreateDateColumn()
   createdAt: Date;
 }

@@ -12,9 +12,12 @@ export class AuthService {
 
   verifyToken(token: string) {
     try {
-      const res = this.jwtService.verify(token);
-      return res;
+      const payload = this.jwtService.verify(token);
+      return { payload, error: null };
     } catch (error) {
+      if (error.message === 'jwt expired') {
+        return { error: 'jwt expired' };
+      }
       throw new BadRequestException('psina');
     }
   }

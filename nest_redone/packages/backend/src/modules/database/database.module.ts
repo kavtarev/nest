@@ -6,6 +6,7 @@ import { init1677227825954 } from 'src/modules/database/migrations/1677227825954
 import { UserEntity } from '../../core/user/user.entity';
 import { addDate1677228276963 } from './migrations/1677228276963-addDate';
 import { addNullable1677237343450 } from './migrations/1677237343450-addNullable';
+import { addUserId1677315373906 } from './migrations/1677315373906-addUserId';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { addNullable1677237343450 } from './migrations/1677237343450-addNullable
         init1677227825954,
         addDate1677228276963,
         addNullable1677237343450,
+        addUserId1677315373906,
       ],
       entities: [UserEntity, PassportEntity, TokenEntity],
       dropSchema: false,

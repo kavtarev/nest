@@ -14,6 +14,10 @@ export class TokenRepository {
     return this.repo.findOne({ where: { id } });
   }
 
+  async deleteOne(token: TokenEntity) {
+    return this.repo.remove(token);
+  }
+
   async save(props: Partial<TokenEntity>) {
     return this.repo.save(props);
   }

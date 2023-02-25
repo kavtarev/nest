@@ -1,5 +1,3 @@
-import { UserRepository } from 'src/core/user/user.repo';
-import { AuthService } from 'src/core/auth/auth.service';
 import {
   applyDecorators,
   BadRequestException,
@@ -9,6 +7,8 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { AuthService } from 'src/core/auth/auth.service';
+import { UserRepository } from 'src/core/user/user.repo';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -30,7 +30,11 @@ export class AuthGuard implements CanActivate {
       throw new BadRequestException('no id pal');
     }
 
-    const user = await this.userRepo.find(payload.id);
+    if (payload.error) {
+      return false;
+    }
+
+    const user = await this.userRepo.find(payload.payload.id);
 
     if (!user) {
       throw new BadRequestException('no user pal');
